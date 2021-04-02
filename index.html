@@ -30,7 +30,7 @@
     </head>
     <body>
         <div id="app">
-            <textarea v-model="lines"></textarea>
+            <textarea v-model="lines" @change="save"></textarea>
             <ul>
                 <li v-for="color in colors" :style="{backgroundColor: color}"><span :style="{color: fgColor(color)}">{{color}}</span></li>
             </ul>
@@ -59,13 +59,11 @@
                     colors() {
                         const reg = /#[0-9a-fA-F]{6}/g;
                         return [... this.lines.matchAll(reg)].map(x => x[0]);
+                    },
+                    save() {
+                        localStorage.lines = this.lines;
                     }
                 },
-                watch: {
-                    lines: function(n, o) {
-                        localStorage.lines = n;
-                    },
-                }
             });
             vue.mount('#app');
         </script>
